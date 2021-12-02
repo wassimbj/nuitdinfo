@@ -23,8 +23,12 @@ func init() {
 		// panic("failed to connect database")
 	}
 	// migrate database schema
-	dbConn.AutoMigrate(&User{})
+	// dbConn.AutoMigrate(&User{})
 	dbConn.AutoMigrate(&Admin{})
+	dbConn.AutoMigrate(&Saver{})
+	dbConn.AutoMigrate(&SavedUser{})
+	dbConn.AutoMigrate(&Boat{})
+	dbConn.AutoMigrate(&Sauvage{})
 }
 
 func DB() *gorm.DB {
