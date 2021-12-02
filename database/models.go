@@ -52,6 +52,7 @@ type Rescue struct {
 	Id          int `gorm:"autoIncrement"`
 	IdSaver     int
 	IdSavedUser int
+	IdBoat      int
 	Date        time.Time
 	IsAccepted  bool
 	Location    string

@@ -19,11 +19,15 @@ func CreateRescue(c *fiber.Ctx) error {
 	// var savedUser database.SavedUser
 	// var boat database.Boat
 
-	// database.DB().First(&saver).Where()
-	database.DB().Create(rescue)
-	// databa.Raw("SELECT id, name, age FROM users WHERE name = ?", 3).Scan(&result)
+	database.DB().Create(rescue.Saver)
+	database.DB().Create(rescue.SavedUser)
+	database.DB().Create(rescue.Boat)
 
-	// database.DB().First()
+	database.DB().Create(database.Rescue{
+		IdSaver:     rescue.Saver.Id,
+		IdSavedUser: rescue.SavedUser.Id,
+		IdBoat:      rescue.Boat.Id,
+	})
 
 	c.Status(200).JSON("ADDED !")
 	return nil
