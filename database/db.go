@@ -28,7 +28,7 @@ func init() {
 	dbConn.AutoMigrate(&Saver{})
 	dbConn.AutoMigrate(&SavedUser{})
 	dbConn.AutoMigrate(&Boat{})
-	dbConn.AutoMigrate(&Sauvage{})
+	dbConn.AutoMigrate(&Rescue{})
 }
 
 func DB() *gorm.DB {

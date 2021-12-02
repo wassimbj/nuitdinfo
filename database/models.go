@@ -13,80 +13,46 @@ type Admin struct {
 // simple user
 type User struct {
 	Id          int    `gorm:"autoIncrement"`
-	Firstname   string `gorm:"size:50"`
-	Lastname    string `gorm:"size:50"`
-	Email       string `gorm:"size:255"`
-	Password    string `gorm:"size:80"`
-	VerifyToken string `gorm:"size:50"`
-	IsAccepted  bool   `gorm:"size:50"` // is accepted by the admin ?
-	IsVerified  bool   `gorm:"size:50"` // is email verified
-	DN          string `gorm:"type:date"`
+	Firstname   string `gorm:"size:50" json:"firstname"`
+	Lastname    string `gorm:"size:50" json:"lastname"`
+	Email       string `gorm:"size:255" json:"email"`
+	Password    string `gorm:"size:80" json:"password"`
+	VerifyToken string `gorm:"size:50" json:"verifytoken"`
+	IsAccepted  bool   `gorm:"size:50" json:"isaccepted"` // is accepted by the admin ?
+	IsVerified  bool   `gorm:"size:50" json:"isverified"` // is email verified
+	DN          string `gorm:"type:date" json:"dn"`
 	Role        string `sql:"type:ENUM('simple_user', 'savior')"`
 }
 
 // simple user
 type Saver struct {
 	Id        int    `gorm:"autoIncrement"`
-	Firstname string `gorm:"size:50"`
-	Lastname  string `gorm:"size:50"`
-	Age       int
+	Firstname string `gorm:"size:50" json:"first_name"`
+	Lastname  string `gorm:"size:50" json:"last_name"`
+	Age       int    `gorm:"size:50" json:"age"`
 }
 
 type SavedUser struct {
 	Id        int    `gorm:"autoIncrement"`
-	Firstname string `gorm:"size:50"`
-	Lastname  string `gorm:"size:50"`
-	Age       int
-	Length    int
-	Taille    int
-	State     int
+	Firstname string `gorm:"size:50" json:"first_name"`
+	Lastname  string `gorm:"size:50" json:"last_name"`
+	Age       int    `gorm:"size:50" json:"age"`
+	Length    int    `gorm:json:"length"`
+	Taille    int    `gorm:json:"taille"`
+	State     int    `gorm:json:"state"`
 }
 
 type Boat struct {
 	Id    int    `gorm:"autoIncrement"`
-	Name  string `gorm:"size:50"`
-	State int
+	Name  string `gorm:"size:50" json:"name"`
+	State int    `gorm:json:"state"`
 }
 
-type Sauvage struct {
+type Rescue struct {
 	Id          int `gorm:"autoIncrement"`
 	IdSaver     int
 	IdSavedUser int
 	Date        time.Time
+	IsAccepted  bool
 	Location    string
 }
-
-// type SavedUser struct {
-// 	Firstname string `gorm:"size:50"`
-// 	Lastname  string `gorm:"size:50"`
-// }
-
-// type Boat struct {
-// 	Id        int `gorm:"autoIncrement"`
-// 	Matricule string
-// 	TripFile  string
-// 	Name      string
-// }
-
-// type TripFiles struct {
-// 	Id     int `gorm:"autoIncrement"`
-// 	BoatId int
-// }
-
-// type Saved struct {
-// }
-
-// type Boat struct {
-// 	Id        int `gorm:"autoIncrement"`
-// 	Matricule string
-// 	TripFile  string
-// 	Name      string
-// }
-
-// type TripFiles struct {
-// 	Id     int `gorm:"autoIncrement"`
-// 	BoatId int
-// }
-
-// type Saved struct {
-// }

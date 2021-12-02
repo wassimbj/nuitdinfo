@@ -11,38 +11,38 @@ import (
 	"nuitdinfo.api/services"
 )
 
-type SignupData struct {
-	Firstname string `json:"first_name"`
-	Lastname  string `json:"last_name"`
-	Email     string `json:"email"`
-	Role      string `json:"role"`
-	Password  string `json:"password"`
-}
+// type SignupData struct {
+// 	Firstname string `json:"first_name"`
+// 	Lastname  string `json:"last_name"`
+// 	Email     string `json:"email"`
+// 	Role      string `json:"role"`
+// 	Password  string `json:"password"`
+// }
 
-func Signup(c *fiber.Ctx) error {
-	c.Accepts("application/json") // "application/json"
+// func Signup(c *fiber.Ctx) error {
+// 	c.Accepts("application/json") // "application/json"
 
-	var userInfo SignupData
-	c.BodyParser(&userInfo)
+// 	var userInfo SignupData
+// 	c.BodyParser(&userInfo)
 
-	if _, exists := services.UserExists(userInfo.Email, 0); exists > 0 {
-		// log.Println("USER ALREADY !!")
-		c.Status(403).JSON("user already exist")
-		return errors.New("user already exists")
-	}
+// 	if _, exists := services.UserExists(userInfo.Email, 0); exists > 0 {
+// 		// log.Println("USER ALREADY !!")
+// 		c.Status(403).JSON("user already exist")
+// 		return errors.New("user already exists")
+// 	}
 
-	_, err := services.CreateUser(userInfo.Firstname, userInfo.Lastname, userInfo.Email, userInfo.Password)
+// 	_, err := services.CreateUser(userInfo.Firstname, userInfo.Lastname, userInfo.Email, userInfo.Password)
 
-	if err != nil {
-		// log.Println("OOOOOOOOOOOOPS")
-		c.Status(500).JSON("something went wrong")
-		return errors.New("something went wrong")
-	}
+// 	if err != nil {
+// 		// log.Println("OOOOOOOOOOOOPS")
+// 		c.Status(500).JSON("something went wrong")
+// 		return errors.New("something went wrong")
+// 	}
 
-	c.Status(200).JSON("OK !")
+// 	c.Status(200).JSON("OK !")
 
-	return nil
-}
+// 	return nil
+// }
 
 type LoginData struct {
 	Email    string `json:"email"`
