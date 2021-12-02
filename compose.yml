@@ -39,7 +39,7 @@ services:
     container_name: "nuitdinfo_app"
     build:
       context: ./
-      dockerfile: Dockerfile.server
+      dockerfile: Dockerfile
     ports:
       - 8000:8000
     depends_on:
