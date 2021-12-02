@@ -1,0 +1,42 @@
+version: "3"
+services:
+  db:
+    image: mysql:5.7
+    container_name: "nuitdinfo_db"
+    ports:
+      - 3306:3306
+    env_file: .env
+    networks:
+      - my_app
+    restart: always
+    volumes:
+      - ./docker-data/mysql:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: pma_container
+    depends_on:
+      - db
+    ports:
+      - 9000:80
+    restart: always
+    networks:
+      - my_app
+
+  app:
+    container_name: "nuitdinfo_app"
+    build:
+      context: ./
+      dockerfile: Dockerfile.server
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    networks:
+      - my_app
+    restart: always
+
+# Networks to be created to facilitate communication between containers
+networks:
+  my_app:
+    driver: bridge
