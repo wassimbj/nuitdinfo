@@ -3,7 +3,6 @@ package api
 import (
 	"errors"
 	"fmt"
-	"log"
 	"strconv"
 	"time"
 
@@ -26,8 +25,7 @@ func Signup(c *fiber.Ctx) error {
 	var userInfo SignupData
 	c.BodyParser(&userInfo)
 
-	log.Println("EMAIL: ", userInfo)
-	if _, exists := services.UserExists(userInfo.Email, 0); exists >= 0 {
+	if _, exists := services.UserExists(userInfo.Email, 0); exists > 0 {
 		// log.Println("USER ALREADY !!")
 		c.Status(403).JSON("user already exist")
 		return errors.New("user already exists")
@@ -70,7 +68,6 @@ func Login(c *fiber.Ctx) error {
 		return errors.New("wait until you get accepted")
 	}
 
-	// _, err := services.CreateUser(userInfo.Firstname, userInfo.Lastname, userInfo.Email, userInfo.Password)
 	loggedInUserId, err := services.LoginUser(userInfo.Email, userInfo.Password)
 
 	if err != nil {
