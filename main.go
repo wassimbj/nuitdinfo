@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"nuitdinfo.api/api"
 )
 
 func main() {
@@ -10,6 +11,11 @@ func main() {
 
 	//? setup cors
 	app.Use(cors.New())
+
+	//? create account
+	app.Post("/auth/signup", api.Signup)
+	app.Post("/auth/login", api.Login)
+	// app.Post("/auth/login", api.Login)
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello 👋!")

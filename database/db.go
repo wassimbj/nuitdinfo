@@ -1,9 +1,9 @@
-package db
+package database
 
 import (
+	"log"
 
-	// "gorm.io/driver/postgres"
-	"gorm.io/driver/postgres"
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 )
 
@@ -12,18 +12,19 @@ var dbConn *gorm.DB
 func init() {
 	DSN := "root:12345@tcp(nuitdinfo_db:3306)/nuitdinfo"
 
-	var pg = postgres.Open(DSN)
 	var err error
-	dbConn, err = gorm.Open(pg, &gorm.Config{
+
+	dbConn, err = gorm.Open(mysql.Open(DSN), &gorm.Config{
 		DisableForeignKeyConstraintWhenMigrating: true,
 	})
 	if err != nil {
-		recover()
-		panic("failed to connect database")
+		log.Fatal("DB FAILED TO CONNECT !!")
+		// recover()
+		// panic("failed to connect database")
 	}
 	// migrate database schema
-	// db.AutoMigrate(&User{})
-	// db.AutoMigrate(&Link{})
+	dbConn.AutoMigrate(&User{})
+	dbConn.AutoMigrate(&Admin{})
 }
 
 func DB() *gorm.DB {
