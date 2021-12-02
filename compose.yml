@@ -23,6 +23,18 @@ services:
     networks:
       - my_app
 
+  app_redis:
+    image: redis
+    restart: always
+    container_name: nuitdinfo_redis
+    volumes:
+      - "./docker-data/redis:/data"
+    command: redis-server
+    ports:
+      - 6379:6379
+    networks:
+      - my_app
+
   app:
     container_name: "nuitdinfo_app"
     build:
@@ -32,6 +44,8 @@ services:
       - 8000:8000
     depends_on:
       - db
+    volumes:
+      - ".:/go/src/app"
     networks:
       - my_app
     restart: always
