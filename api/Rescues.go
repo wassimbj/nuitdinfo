@@ -14,7 +14,7 @@ type NewRescueData struct {
 	SavedUser database.SavedUser `json:"saved_user"`
 	Boat      database.Boat      `json:"boat"`
 	Location  string             `json:"loc"`
-	Date      string             `gorm:"type:timestamp" json:"da"`
+	Date      time.Time          `gorm:"type:timestamp" json:"date"`
 }
 
 func CreateRescue(c *fiber.Ctx) error {
@@ -30,15 +30,13 @@ func CreateRescue(c *fiber.Ctx) error {
 	database.DB().Create(&rescue.SavedUser)
 	database.DB().Create(&rescue.Boat)
 
-	rescueToCreate := database.Rescue{
+	database.DB().Create(&database.Rescue{
 		IdSaver:     rescue.Saver.Id,
 		IdSavedUser: rescue.SavedUser.Id,
 		IdBoat:      rescue.Boat.Id,
 		Location:    rescue.Location,
 		Date:        rescue.Date,
-	}
-
-	database.DB().Create(&rescueToCreate)
+	})
 
 	c.Status(200).JSON("ADDED !")
 
@@ -72,7 +70,6 @@ func EditRescue(c *fiber.Ctx) error {
 	if result1.RowsAffected < 1 || (result2.RowsAffected < 1 || saverResult.RowsAffected < 1) {
 		return c.Status(202).SendString("Error no data has Updated ")
 	}
-	// log.Println()
 
 	c.Status(200).JSON("DONE !")
 	return nil
@@ -94,7 +91,8 @@ func AcceptRescue(c *fiber.Ctx) error {
 
 	rescueId, _ := strconv.Atoi(c.Params("id"))
 
-	database.DB().Update("is_accepted", 1).Where("id = ?", rescueId)
+	// database.DB().Update("is_accepted", 1).Where("id = ?", rescueId)
+	database.DB().Model(&database.Rescue{}).Where("id = ?", rescueId).Update("is_accepted", 1)
 
 	c.Status(200).JSON("DONE !")
 	return nil

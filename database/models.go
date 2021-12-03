@@ -50,10 +50,10 @@ type Boat struct {
 
 type Rescue struct {
 	Id          int `gorm:"autoIncrement"`
-	IdSaver     int `gorm:"foreignKey:CompanyRefer`
-	IdSavedUser int `gorm:"foreignKey:CompanyRefer`
+	IdSaver     int `gorm:"foreignKey:"`
+	IdSavedUser int `gorm:"foreignKey:"`
 	IdBoat      int
-	Date        string `gorm:"type:timestamp" json:"data"`
+	Date        time.Time `gorm:"type:timestamp" json:"data"`
 	IsAccepted  bool
 	Location    string
 }
