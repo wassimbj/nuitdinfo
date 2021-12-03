@@ -53,7 +53,7 @@ type Rescue struct {
 	IdSaver     int `gorm:"foreignKey:CompanyRefer`
 	IdSavedUser int `gorm:"foreignKey:CompanyRefer`
 	IdBoat      int
-	Date        time.Time
+	Date        string `gorm:"type:timestamp" json:"data"`
 	IsAccepted  bool
 	Location    string
 }

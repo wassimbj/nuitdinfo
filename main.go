@@ -12,10 +12,12 @@ func main() {
 	//? setup cors
 	app.Use(cors.New())
 
-	app.Post("/auth/login", api.Login)
-	app.Post("/rescue/add", api.CreateRescue)
-	app.Post("/rescue/edit", api.EditRescue)
-	app.Get("/rescue/delete/:id", api.DeleteRescue)
+	apiRoute := app.Group("api")
+	apiRoute.Post("/auth/login", api.Login)
+	apiRoute.Post("/rescue/add", api.CreateRescue)
+	apiRoute.Post("/rescue/edit", api.EditRescue)
+	apiRoute.Get("/rescue/delete/:id", api.DeleteRescue)
+	apiRoute.Get("/rescue/accept/:id", api.AcceptRescue)
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello 👋!")
