@@ -56,16 +56,11 @@ func Login(c *fiber.Ctx) error {
 	c.BodyParser(userInfo)
 
 	fmt.Println(userInfo.Email)
-	existedUser, exists := services.UserExists(userInfo.Email, 0)
+	_, exists := services.UserExists(userInfo.Email, 0)
 
 	if exists <= 0 {
 		c.Status(403).JSON("user doesn't exist")
 		return errors.New("user doesn't exist")
-	}
-
-	if !existedUser.IsAccepted {
-		c.Status(403).JSON("wait until you get accepted")
-		return errors.New("wait until you get accepted")
 	}
 
 	loggedInUserId, err := services.LoginUser(userInfo.Email, userInfo.Password)
@@ -77,5 +72,22 @@ func Login(c *fiber.Ctx) error {
 
 	config.Session().Storage.Set("user_id", []byte(strconv.Itoa(loggedInUserId)), time.Duration(time.Now().Day()*20))
 	c.Status(200).JSON("OK !")
+	return nil
+}
+
+func GetLoggedInAdmin(c *fiber.Ctx) error {
+	c.Accepts("application/json") // "application/json"
+
+	data, _ := config.Session().Storage.Get("user_id")
+
+	fmt.Println(data)
+	userId, _ := strconv.Atoi(string(data))
+	adminData, isLoggedIn := services.GetLoggedInUser(userId)
+
+	if !isLoggedIn {
+		return c.Status(401).JSON("NOT AUTH")
+	}
+
+	c.Status(200).JSON(adminData)
 	return nil
 }

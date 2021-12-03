@@ -8,17 +8,17 @@ import (
 	"nuitdinfo.api/database"
 )
 
-func UserExists(email string, id int) (database.User, int64) {
+func UserExists(email string, id int) (database.Admin, int64) {
 	// by email
-	var user database.User
+	var user database.Admin
 	var affectedRows int64
 	if email != "" && id == 0 {
-		result := database.DB().Select("id", "password").Where(&database.User{
+		result := database.DB().Select("id", "password").Where(&database.Admin{
 			Email: email,
 		}).First(&user)
 		affectedRows = result.RowsAffected
 	} else {
-		result := database.DB().Select("id").Where(&database.User{
+		result := database.DB().Select("id").Where(&database.Admin{
 			Id: id,
 		}).First(&user)
 		affectedRows = result.RowsAffected
@@ -35,7 +35,7 @@ func CreateUser(first_name string, last_name string, email string, password stri
 		log.Fatal(err)
 		return 0, err
 	}
-	newUser := database.User{
+	newUser := database.Admin{
 		Firstname: first_name,
 		Lastname:  last_name,
 		Email:     email,
@@ -66,10 +66,10 @@ func LoginUser(email string, password string) (int, error) {
 	return user.Id, nil
 }
 
-func GetLoggedInUser(userId interface{}) (database.User, bool) {
-	var user database.User
+func GetLoggedInUser(userId interface{}) (database.Admin, bool) {
+	var user database.Admin
 
-	result := database.DB().Select("id", "first_name").Where(&database.User{Id: userId.(int)}).First(&user)
+	result := database.DB().Select("id", "firstname").Where(&database.Admin{Id: userId.(int)}).First(&user)
 	if result.RowsAffected == 0 {
 		return user, false
 	}

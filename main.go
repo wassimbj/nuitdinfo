@@ -10,10 +10,14 @@ func main() {
 	app := fiber.New()
 
 	//? setup cors
-	app.Use(cors.New())
+	app.Use(cors.New(cors.Config{
+		AllowOrigins:     "*",
+		AllowCredentials: true,
+	}))
 
 	apiRoute := app.Group("api")
 	apiRoute.Post("/auth/login", api.Login)
+	apiRoute.Get("/auth/isauth", api.GetLoggedInAdmin)
 	apiRoute.Post("/rescue/add", api.CreateRescue)
 	apiRoute.Post("/rescue/edit", api.EditRescue)
 	apiRoute.Delete("/rescue/delete/:id", api.DeleteRescue)
