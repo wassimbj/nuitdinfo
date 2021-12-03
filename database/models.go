@@ -37,23 +37,30 @@ type SavedUser struct {
 	Firstname string `gorm:"size:50" json:"first_name"`
 	Lastname  string `gorm:"size:50" json:"last_name"`
 	Age       int    `gorm:"size:50" json:"age"`
-	Length    int    `gorm:json:"length"`
-	Taille    int    `gorm:json:"taille"`
-	State     int    `gorm:json:"state"`
+	Length    int    `json:"length"`
+	Taille    int    `json:"taille"`
+	State     int    `json:"state"`
 }
 
 type Boat struct {
 	Id    int    `gorm:"autoIncrement"`
 	Name  string `gorm:"size:50" json:"name"`
-	State int    `gorm:json:"state"`
+	State int    `json:"state"`
 }
 
 type Rescue struct {
 	Id          int `gorm:"autoIncrement"`
-	IdSaver     int
-	IdSavedUser int
+	IdSaver     int `gorm:"foreignKey:CompanyRefer`
+	IdSavedUser int `gorm:"foreignKey:CompanyRefer`
 	IdBoat      int
 	Date        time.Time
 	IsAccepted  bool
 	Location    string
+}
+type ReqRescue struct {
+	Saver    Saver
+	Persons  []SavedUser
+	Boat     Boat
+	Date     time.Time
+	Location string
 }

@@ -12,11 +12,10 @@ func main() {
 	//? setup cors
 	app.Use(cors.New())
 
-	//? create account
-	// app.Post("/auth/signup", api.Signup)
 	app.Post("/auth/login", api.Login)
 	app.Post("/rescue/add", api.CreateRescue)
-	// app.Post("/auth/login", api.Login)
+	app.Post("/rescue/edit", api.EditRescue)
+	app.Get("/rescue/delete/:id", api.DeleteRescue)
 
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello 👋!")
