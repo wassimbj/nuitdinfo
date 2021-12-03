@@ -9,11 +9,11 @@ import (
 )
 
 type NewRescueData struct {
-	Saver     database.Saver     `json:"saver"`
-	SavedUser database.SavedUser `json:"saved_user"`
-	Boat      database.Boat      `json:"boat"`
-	Location  string             `json:"loc"`
-	Date      string             `json:"date"`
+	Saver     database.Saver       `json:"saver"`
+	SavedUser []database.SavedUser `json:"saved_user"`
+	Boat      database.Boat        `json:"boat"`
+	Location  string               `json:"loc"`
+	Date      string               `gorm:"size:20" json:"date"`
 }
 
 func CreateRescue(c *fiber.Ctx) error {
@@ -28,14 +28,15 @@ func CreateRescue(c *fiber.Ctx) error {
 	database.DB().Create(&rescue.Boat)
 
 	fmt.Println("DATE: ", rescue.Date)
-
-	database.DB().Create(&database.Rescue{
-		IdSaver:     rescue.Saver.Id,
-		IdSavedUser: rescue.SavedUser.Id,
-		IdBoat:      rescue.Boat.Id,
-		Location:    rescue.Location,
-		Date:        rescue.Date,
-	})
+	for _, i := range rescue.SavedUser {
+		database.DB().Create(&database.Rescue{
+			IdSaver:     rescue.Saver.Id,
+			IdSavedUser: i.Id,
+			IdBoat:      rescue.Boat.Id,
+			Location:    rescue.Location,
+			Date:        rescue.Date,
+		})
+	}
 
 	c.Status(200).JSON("ADDED !")
 
@@ -95,4 +96,34 @@ func AcceptRescue(c *fiber.Ctx) error {
 
 	c.Status(200).JSON("DONE !")
 	return nil
+}
+func GetSaver(c *fiber.Ctx) error {
+
+	saverName := c.Params("name")
+	saver := new(database.Saver)
+	saver.Firstname = saverName
+	database.DB().Where("firstname", saver.Firstname).Find(&saver)
+	if saver.Id < 1 {
+		return c.Status(fiber.StatusNotFound).JSON("Data not found")
+	}
+	return c.Status(fiber.StatusOK).JSON(saver)
+}
+func GetSaveds(c *fiber.Ctx) error {
+
+	savedName := c.Params("name")
+	Saved := new(database.SavedUser)
+	Saved.Firstname = savedName
+	database.DB().Where("firstname", Saved.Firstname).Find(&Saved)
+	if Saved.Id < 1 {
+		return c.Status(fiber.StatusNotFound).JSON("Data not found")
+	}
+	return c.Status(fiber.StatusOK).JSON(Saved)
+}
+func GetRescue(c *fiber.Ctx) error {
+	rescue := new([]database.Rescue)
+	database.DB().Find(&rescue)
+	if len(*rescue) < 1 {
+		return c.Status(fiber.StatusNotFound).JSON("Data not found")
+	}
+	return c.Status(fiber.StatusOK).JSON(rescue)
 }

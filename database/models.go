@@ -1,9 +1,5 @@
 package database
 
-import (
-	"gorm.io/gorm"
-)
-
 type Admin struct {
 	Id        int    `gorm:"autoIncrement"`
 	Firstname string `gorm:"size:50"`
@@ -51,7 +47,6 @@ type Boat struct {
 }
 
 type Rescue struct {
-	gorm.Model
 	Id          int `gorm:"autoIncrement"`
 	IdSaver     int
 	IdSavedUser int

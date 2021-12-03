@@ -16,9 +16,11 @@ func main() {
 	apiRoute.Post("/auth/login", api.Login)
 	apiRoute.Post("/rescue/add", api.CreateRescue)
 	apiRoute.Post("/rescue/edit", api.EditRescue)
-	apiRoute.Get("/rescue/delete/:id", api.DeleteRescue)
-	apiRoute.Get("/rescue/accept/:id", api.AcceptRescue)
-
+	apiRoute.Delete("/rescue/delete/:id", api.DeleteRescue)
+	apiRoute.Put("/rescue/accept/:id", api.AcceptRescue)
+	apiRoute.Get("/rescue/saver/:name", api.GetSaver)
+	apiRoute.Get("/rescue/saved/:name", api.GetSaveds)
+	apiRoute.Get("/rescue", api.GetRescue)
 	app.Get("/", func(c *fiber.Ctx) error {
 		return c.SendString("Hello 👋!")
 	})
