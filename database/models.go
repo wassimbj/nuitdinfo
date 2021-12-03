@@ -1,6 +1,8 @@
 package database
 
-import "time"
+import (
+	"gorm.io/gorm"
+)
 
 type Admin struct {
 	Id        int    `gorm:"autoIncrement"`
@@ -49,18 +51,23 @@ type Boat struct {
 }
 
 type Rescue struct {
+	gorm.Model
 	Id          int `gorm:"autoIncrement"`
-	IdSaver     int `gorm:"foreignKey:"`
-	IdSavedUser int `gorm:"foreignKey:"`
+	IdSaver     int
+	IdSavedUser int
 	IdBoat      int
-	Date        time.Time `gorm:"type:timestamp" json:"data"`
+	Date        string `json:"date"`
 	IsAccepted  bool
 	Location    string
+
+	Saver     `gorm:"foreignKey:IdSaver"`
+	SavedUser `gorm:"foreignKey:IdSavedUser"`
 }
-type ReqRescue struct {
-	Saver    Saver
-	Persons  []SavedUser
-	Boat     Boat
-	Date     time.Time
-	Location string
-}
+
+// type ReqRescue struct {
+// 	Saver    Saver
+// 	Persons  []SavedUser
+// 	Boat     Boat
+// 	Date     time.Time
+// 	Location string
+// }

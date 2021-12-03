@@ -1,9 +1,8 @@
 package api
 
 import (
-	"log"
+	"fmt"
 	"strconv"
-	"time"
 
 	"github.com/gofiber/fiber/v2"
 	"nuitdinfo.api/database"
@@ -14,7 +13,7 @@ type NewRescueData struct {
 	SavedUser database.SavedUser `json:"saved_user"`
 	Boat      database.Boat      `json:"boat"`
 	Location  string             `json:"loc"`
-	Date      time.Time          `gorm:"type:timestamp" json:"date"`
+	Date      string             `json:"date"`
 }
 
 func CreateRescue(c *fiber.Ctx) error {
@@ -24,11 +23,11 @@ func CreateRescue(c *fiber.Ctx) error {
 
 	c.BodyParser(&rescue)
 
-	log.Println("DATE: ", rescue.Date)
-
 	database.DB().Create(&rescue.Saver)
 	database.DB().Create(&rescue.SavedUser)
 	database.DB().Create(&rescue.Boat)
+
+	fmt.Println("DATE: ", rescue.Date)
 
 	database.DB().Create(&database.Rescue{
 		IdSaver:     rescue.Saver.Id,
@@ -48,7 +47,7 @@ type EditRescueData struct {
 	SavedUser database.SavedUser `json:"saved_user"`
 	Boat      database.Boat      `json:"boat"`
 	Location  string             `json:"location"`
-	Date      time.Time          `json:"date"`
+	Date      string             `json:"date"`
 }
 
 func EditRescue(c *fiber.Ctx) error {
